@@ -72,13 +72,13 @@ def _parse_term(tokens: list[str], pos: int) -> tuple[Term, int]:
     indicator=token[0]
     body=token[1:]
     
-    if indicator=="I": 
+    if indicator=='I': 
         if not body: 
             raise ParseError("UnexpectedEOF")
         value=decode_base94(body)
         return TInt(value), pos+1 # Move to next token
     
-    elif indicator=="S": 
+    elif indicator=='S': 
         value=decode_string(body)
         return TString(value), pos+1
 
@@ -87,3 +87,15 @@ def _parse_term(tokens: list[str], pos: int) -> tuple[Term, int]:
 
     elif indicator == 'F':
         return TBool(False), pos + 1
+    
+    elif indicator == 'U':
+    # body is the operator name
+        op = body
+        sub_term, next_pos = _parse_term(tokens, pos + 1)  # Parse the operand
+        return TUnOp(op, sub_term), next_pos
+    
+    elif indicator=='B': 
+        op=body
+        left, pos1=_parse_term(tokens, pos+1)
+        right, pos2=_parse_term(tokens, pos1)
+        return TBinOp(left,op, right), pos2
