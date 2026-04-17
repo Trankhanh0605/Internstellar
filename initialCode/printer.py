@@ -6,7 +6,7 @@ from ifp_ast import CHARS, CHARS_DECODED, TBinOp, TBool, TIf, TInt, TLam, TStrin
 _ENCODE_MAP = {dst: src for src, dst in zip(CHARS, CHARS_DECODED)}
 
 
-def to_base94(x: int) -> str | None:
+def to_base94(x: int) -> str | None: # don't need to implement encode_base94
     if x < 0:
         return None
     if x == 0:
@@ -65,3 +65,5 @@ def pp_term(term: Term) -> str:
         return "? " + pp_term(term.cond) + " " + pp_term(term.true_branch) + " " + pp_term(term.false_branch)
 
     raise TypeError(f"Unknown term type: {type(term).__name__}")
+
+

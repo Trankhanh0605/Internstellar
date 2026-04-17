@@ -65,6 +65,7 @@ def _ordered_unique(chars: str) -> str:
 
 
 CHARS = "".join(chr(i) for i in range(33, 127))
+
 CHARS_DECODED = _ordered_unique(
     "abcdefghijklmnopqrstuvwxyz"
     "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
