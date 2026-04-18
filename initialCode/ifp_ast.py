@@ -65,6 +65,7 @@ def _ordered_unique(chars: str) -> str:
 
 
 CHARS = "".join(chr(i) for i in range(33, 127))
+# -> !"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~
 
 CHARS_DECODED = _ordered_unique(
     "abcdefghijklmnopqrstuvwxyz"
@@ -73,3 +74,6 @@ CHARS_DECODED = _ordered_unique(
     + "".join(ch for ch in CHARS if ch not in "{}")
     + " \n"
 )
+
+# abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!"#$%&'()*+,-./:;<=>?@[\]^_`|~ 
+

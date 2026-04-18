@@ -66,9 +66,6 @@ def _parse_term(tokens: list[str], pos: int) -> tuple[Term, int]:
 
     token=tokens[pos]
     
-    if not tokens: 
-        raise ParseError("UnexpectedEOF")
-    
     indicator=token[0]
     body=token[1:]
     
@@ -99,3 +96,25 @@ def _parse_term(tokens: list[str], pos: int) -> tuple[Term, int]:
         left, pos1=_parse_term(tokens, pos+1)
         right, pos2=_parse_term(tokens, pos1)
         return TBinOp(left,op, right), pos2
+    
+    elif indicator=='v': 
+        if not body: 
+            raise ParseError("UnexpectedEOF")
+        value=decode_base94(body)
+        return TVar(value), pos+1
+    
+    elif indicator=='L': 
+        if not body: 
+            raise ParseError("UnexpectedEOF")
+        var_id=decode_base94(body)
+        sub_term, next_pos = _parse_term(tokens, pos + 1) 
+        return TLam(var_id, sub_term), next_pos
+    
+    elif indicator=='?': 
+        cond,         pos1 = _parse_term(tokens, pos+1)
+        true_branch,  pos2 = _parse_term(tokens, pos1)
+        false_branch, pos3 = _parse_term(tokens, pos2)
+        return TIf(cond, true_branch, false_branch), pos3
+    
+    else:
+        raise ParseError("UnexpectedChar", pos, indicator)
